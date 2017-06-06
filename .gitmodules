@@ -1,0 +1,3 @@
+[submodule "deps/src/pppack"]
+	path = deps/src/pppack
+	url = http://github.com/jagot/pppack
