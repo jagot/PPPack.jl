@@ -22,6 +22,9 @@ function bsplvb(t::Vector{Float32}, jhigh::Integer, index::Integer,
           t, Int32(jhigh), Int32(index), x, Int32(left), biatx)
 end
 
+pppbindir = abspath(joinpath(dirname(_jl_libpppack), "../../builds/pppack/bin"))
+example(exe) = `$(joinpath(pppbindir, exe))`
+
 export interv, bsplvb
 
 end # module
