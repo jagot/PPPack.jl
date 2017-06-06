@@ -10,6 +10,7 @@ build_dir = joinpath(BinDeps.depsdir(libpppack), "builds", "pppack")
 
 provides(SimpleBuild,
          (@build_steps begin
+	  `git submodule update --init --recursive`
           CreateDirectory(build_dir)
           @build_steps begin
           ChangeDirectory(build_dir)
