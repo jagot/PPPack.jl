@@ -2,7 +2,7 @@
 #+AUTHOR: Stefanos Carlström
 #+EMAIL: stefanos.carlstrom@gmail.com
 
-Simple Julia wrapper around [[http://www.netlib.org/pppack/][Carl F. de Boor piecewise polynomials
+Simple Julia wrapper around [[http://www.netlib.org/pppack/][Carl F. de Boor's piecewise polynomials
 package]].
 
 * Installation instructions
