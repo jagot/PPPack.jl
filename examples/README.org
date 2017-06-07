@@ -42,10 +42,11 @@
   #+BEGIN_SRC julia :exports code
     x = linspace(t[k],t[end],31)
     values = zeros(Float32,(length(x),nint)) # Storage for the B-splines
+    nothing
   #+END_SRC
 
   #+RESULTS:
-  : 0
+  : nothing
 
   Temporary/accessory variables:
   #+BEGIN_SRC julia :exports code
@@ -176,3 +177,62 @@
 
   #+RESULTS:
   : nothing
+
+** Calculating derivatives of B-splines
+   It is easy to calculate derivatives of the B-splines using the
+   routine =bpslvd=. First, we specify how many orders we want (from
+   =0= to =nderiv-1=):
+   #+BEGIN_SRC julia :exports code
+     nderiv = 3
+   #+END_SRC
+
+   #+RESULTS:
+   : 3
+
+   We then allocate (temporary) storage:
+   #+BEGIN_SRC julia :exports code
+     x = linspace(t[k],t[end],301)
+     values = zeros(Float32,(length(x),nint+2,nderiv)) # Storage for the B-splines
+     a = Array{Float32}((k,k)) # Temporary storage
+     dbiatx = zeros(Float32, (k,nderiv)) # Temporary storage
+     left = 0 # Holds left point of interval currently considered
+     mflag = 0 # Non-zero indicates outside domain
+   #+END_SRC
+
+   #+RESULTS:
+   : 0
+
+   For each value of =x=, calculate the B-splines and its derivatives:
+   #+BEGIN_SRC julia :exports code
+     for i in eachindex(x)
+         left,mflag = interv(t,n+1,x[i],left,mflag)
+         leftmk = left - k
+         bsplvd(t, k, x[i], left, a, dbiatx, nderiv)
+         values[i,left + (-k+1:0),:] = dbiatx
+         dbiatx[:] = 0
+     end
+   #+END_SRC
+
+   #+RESULTS:
+   : nothing
+
+
+   #+BEGIN_SRC julia :exports results :results file
+     figure("xex1 der", figsize=(6.5,8))
+     clf()
+     for i in 1:nderiv
+         subplot(nderiv,1,i)
+         plot(x,values[:,:,i])
+         grid(true)
+         dd = repeat("'", i-1)
+         ylabel(latexstring("B_i$(dd)(x)"))
+         i < nderiv && gca()[:set_xticklabels]([])
+     end
+     xlabel(L"x")
+     tight_layout()
+     savefig("xex1-der.png", dpi = 150)
+     "xex1-der.png"
+   #+END_SRC
+
+   #+RESULTS:
+   [[file:xex1-der.png]]
