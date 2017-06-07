@@ -10,3 +10,6 @@ package]].
     Pkg.clone("https://github.com/jagot/PPPack.jl.git")
     Pkg.build("PPPack")
   #+END_SRC
+
+* Usage example
+  Examples can be found in [[examples/]].
