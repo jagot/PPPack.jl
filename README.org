@@ -5,6 +5,8 @@
 Simple Julia wrapper around [[http://www.netlib.org/pppack/][Carl F. de Boor's piecewise polynomials
 package]].
 
+[[file:examples/xex1-hi.png]]
+
 * Installation instructions
   #+BEGIN_SRC julia
     Pkg.clone("https://github.com/jagot/PPPack.jl.git")

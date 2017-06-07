@@ -141,3 +141,38 @@
 
   #+RESULTS:
   [[file:xex1.png]]
+
+  #+BEGIN_SRC julia :exports none
+    t = Float32[0.,0,0,1,1,3,4,6,6,6]
+    n = 7
+    k = 3
+    nint = length(unique(t))
+
+    x = linspace(t[k],t[end],301)
+    values = zeros(Float32,(length(x),nint)) # Storage for the B-splines
+    biatx = zeros(Float32, n) # Temporary storage
+    left = 0 # Holds left point of interval currently considered
+    mflag = 0 # Non-zero indicates outside domain
+
+    for i in eachindex(x)
+        left,mflag = interv(t,n+1,x[i],left,mflag)
+        leftmk = left - k
+        sel = left + (-k+1:0)
+        bsplvb(t, k, 1, x[i], left, view(biatx, sel))
+        values[i,:] = biatx[k:end]
+        biatx[sel] = 0
+    end
+
+    figure("xex1 hi")
+    clf()
+    plot(x,values)
+    grid(true)
+    xlabel(L"x")
+    ylabel(L"B_i(x)")
+    tight_layout()
+
+    savefig("xex1-hi.png", dpi=150)
+  #+END_SRC
+
+  #+RESULTS:
+  : nothing
